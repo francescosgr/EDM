@@ -54,8 +54,7 @@ for(c in names(results)[1:4])
   }
 }
 
-g1 <- ggplot(days_since, aes(x=days_since_2011, y=results$days_since_2011)) + geom_line()
-+ ylim(c(0,6000)) + geom_rug(alpha=0.1, sides="b") + ylab("Prediction") + xlab("Days since 2011")
+g1 <- ggplot(days_since, aes(x=days_since_2011, y=results$days_since_2011)) + geom_line()+ ylim(c(0,6000)) + geom_rug(alpha=0.1, sides="b") + ylab("Prediction") + xlab("Days since 2011")
 
 g2 <- ggplot(days_since, aes(x=temp, y=results$temp)) + geom_line() + ylim(c(0,6000)) + geom_rug(alpha=0.1, sides="b") + xlab("Temperature")
 
@@ -99,6 +98,7 @@ for(i in 1:nrow(th)){
   th[["p"]][i] <- sum(sal) / nr
 }
 
+ggplot(th, aes(x=temp, y=hum)) + geom_tile(aes(fill=p, width=10, height=15)) + geom_rug(alpha=0.01)
 ```
 
 
@@ -118,6 +118,8 @@ Analyse the influence of **bedrooms, bathrooms, sqft_living** and **floors** on 
 
 d <- read.csv("kc_house_data.csv")
 
+set.seed(50)
+
 sampled <- sample_n(d, 1000)
 
 sampled <- select(sampled, bedrooms, bathrooms, sqft_living, sqft_lot, floors, yr_built, price)
@@ -136,5 +138,14 @@ for(c in names(results)[1:4])
   }
 }
 
+g1 <- ggplot(sampled, aes(x=bedrooms, y=results$bedrooms)) + geom_line() + geom_rug(alpha=0.1, sides="b") + ylab("Prediction") + xlab("Bedrooms")
+
+g2 <- ggplot(sampled, aes(x=bathrooms, y=results$bathrooms)) + geom_line() + geom_rug(alpha=0.1, sides="b") + xlab("Bathrooms")
+
+g3 <- ggplot(sampled, aes(x=sqft_living, y=results$sqft_living)) + geom_line() + geom_rug(alpha=0.1, sides="b") + xlab("Sqft Living")
+
+g4 <- ggplot(sampled, aes(x=floors, y=results$floors)) + geom_line() + geom_rug(alpha=0.1, sides="b")+ xlab("Floors")
+
+subplot(g1, g2, g3, g4, titleX = TRUE, shareX = FALSE)
 ```
 
