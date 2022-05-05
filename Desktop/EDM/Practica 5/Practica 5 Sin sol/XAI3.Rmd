@@ -66,6 +66,21 @@ subplot(g1, g2, g3, g4, shareX = FALSE, shareY = TRUE, titleX = TRUE)
 
 ```
 
+**Interpretación**
+
+- `Days since 2011`: A medida que pasan más días desde 2011, en general, se tienden a vender cada vez más bicicletas. No obstante, hay que mencionar dos aspectos importantes. El primero es que entre los 130 y los 350 días, la diferencia de la importancia es mínima en esta variable (siempre en torno a 3700-3800 bicicletas más). El segundo es que la tendencia es siempre creciente a excepción del tramo final, pues a partir de los 662 días se pasa de vender 5814 bicicletas más a vender 4799, es decir que la influencia del paso del tiempo deja de ser siempre creciente.
+Estas explicaciones son fiables, pues se tienen observaciones para todos los valores de esta variable.
+
+- `Temperature`: Lo más importante en esta variable es que, empezando por el valor más bajo (5 grados bajo 0), según la temperatura aumenta, se venden más bicicletas (pasando de vender 3094 bicicletas con -5 grados hasta 5126 bicicletas con 16 grados). No obstante, esta tendencia creciente se frena en los 16 grados, para mantenerse estable hasta los 26 grados aproximadamente. A partir de esa temperatura, por cada grado que aumenta la temperatura se venderán menos bicicletas.
+En otras palabras, se venderán más bicicletas cuando la temperatura sea agradable (16-26 grados). Cuando hace frío o calor, se venden cada vez menos bicicletas.
+Finalmente, hay que tener cuidado con las explicaciones cuando las temperaturas son menores que 0.5 grados o mayores que 29, pues se tienen menos observaciones cuando la temperatura toma esos valores.
+
+- `Humidity`: Mientras la humedad es menor que 50 el número de bicicletas vendidas se mantendrá siempre constante en 4700 bicicletas aproximadamente. Una vez superado ese umbral del 50% de humedad, según aumenta la humedad, se venden cada vez menos bicicletas, hasta llegar a las 3490 bicicletas vendidas cuando la humedad es del 97%.
+No obstante, estas explicaciones deben ser revisadas cuando la humedad se encuentra por debajo del 37% o por encima del 92%, pues en esos casos no se tienen muchas observaciones, por lo que las explicaciones en esos casos no son del todo fiables.
+
+- `Wind speed`: El modelo predice que la tendencia de esta variable es claramente decreciente. Según aumenta el viento cada vez se venden menos bicicletas, pasando de 4640 cuando el viento toma un valor de 1.5, a 3992 cuando el viento toma un valor de 24. Para valores mayores que 24, el número de bicicletas vendidas se mantendrá estable en ese valor.
+No obstante, para valores mayores que 24, hay que reconsiderar la fiabilidad de estas explicaciones, pues se tienen muy pocas (o ninguna) observaciones para esos valores en esta variable.
+
 ## EXERCISE:
 
 Generate a 2D Partial Dependency Plot with humidity and temperature to predict the number of bikes rented depending of those parameters.
@@ -101,6 +116,16 @@ for(i in 1:nrow(th)){
 ggplot(th, aes(x=temp, y=hum)) + geom_tile(aes(fill=p, width=10, height=15)) + geom_rug(alpha=0.01)
 ```
 
+**Interpretacion**
+
+Podemos apreciar una cierta independencia entre el efecto de la temperatura y el de la humedad, ya que, como se ha podido observar en el PDP en 1 dimensión de ambas variables, mientras la humedad se mantenga por debajo del 50% el número de bicicletas vendidas será máximo, y a partir de ese umbral irá disminuyendo el número de ventas según aumente la humedad. Por otro lado, en el caso de la temperatura, partiendo desde la temperatura mínima, según aumenta la temperatura aumenta el número de ventas, hasta llegar a un máximo sobre los 16 grados, donde el número de bicicletas vendidas se mantiene constante hasta llegar a los 26 grados. A partir de ahí vuelve a disminuir el número de bicicletas vendidas según aumenta la temperatura.
+
+En el PDP en 2D podemos apreciar estos mismos fenómenos de manera idéntica. Vemos que el número máximo de ventas se alcanzará cuando la temperatura sea agradable (en torno a 20 grados) y la humedad sea menor que el 50%; mientras que este número alcanzará su mínimo cuando la temperatura sea extremadamente baja y la humedad muy alta.
+
+Asumimos que los efectos de ambas variables son independientes porque estos mismos efectos se pueden apreciar por separado, sin hacer uso del PDP en 2 dimensiones, y por tanto no es de interés estudiar su interacción.
+
+También hay que tener en consideración que no se tienen muchas observaciones reales de todos los valores que se han probado, con lo cual el modelo no se ha podido entrenar en esos escenarios y las explicaciones pueden no ser fiables. Es el caso de la humedad cuando toma valores por debajo del 37% o por encima del 92%; o de la temperatura cuando está por debajo de 0.5 o por encima de 29 grados.
+Además, cabe mencionar que no se tienen datos tampoco de cuántas observaciones del conjunto se tienen para cada posible caso de interacción de ambas variables.
 
 ## EXERCISE:
 
@@ -149,3 +174,12 @@ g4 <- ggplot(sampled, aes(x=floors, y=results$floors)) + geom_line() + geom_rug(
 subplot(g1, g2, g3, g4, titleX = TRUE, shareX = FALSE)
 ```
 
+**Interpretacion**
+
+- `bedrooms`: Esta variable se comporta de una manera curiosa, pues, partiendo de 0 habitaciones, a más habitaciones, más barata será la vivienda, hasta llegar a 4 habitaciones. A partir de ese punto se invierte la tendencia, y a mayor número de habitaciones, mayor precio. No obstante, no se puede afirmar con firmeza esto, ya que se tienen pocas observaciones para la variable cuando se tienen 0 o más de 6 habitaciones.
+
+- `bathrooms`: Se puede apreciar claramente como a mayor número de cuartos de baños, mayor será el precio de la vivienda en cuestión. No obstante, esta afirmación no es del todo fiable para 0 o más de 4 baños, pues apenas se tienen muestras de entrenamiento con estos valores.
+
+- `sqft_living`: Podemos apreciar como claramente, cuánto mayor sea la superficie del salón, más cara será la vivienda en cuestión. No obstante, esta afirmación está en duda para valores menores que 560 pies cuadrados y mayores que 4900 pies cuadrados.
+
+- `floors`: En esta variable podemos afirmar que a mayor número de pisos, mayor precio tendrá la vivienda, y es una explicación fiable, pues se tienen observaciones para todos los valores en el set de entrenamiento.
